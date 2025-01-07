@@ -79,39 +79,43 @@ class OnboardingMainScreenState extends State<OnboardingMainScreen> {
             ),
           ),
 
-          Positioned(
-            bottom: 20,
+
+          isLastPage
+          ? Positioned(
+            bottom: 25,
+            left: 150,
+            child: CustomElevatedButton(
+                          backgroundColor: Colors.teal,
+                          foregroundColor: Colors.white,
+                          onPressed: () {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const LoginScreen(),
+                              ),
+                            );
+                          },
+                          text: "Get Started",
+                        ),
+          )
+          : 
+            Positioned(
+            bottom: 25,
             left: 20,
             right: 20,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                isLastPage
-                    ? const SizedBox()
-                    : CustomTextButton(
-                      backgroundColor: Colors.black,
+              children: 
+                  [
+                     CustomTextButton(
+                      backgroundColor: Colors.grey[800],
                       foregroundColor: Colors.white,
                       text: "Skip",
                       onPressed: () {
                           controller.jumpToPage(3);
                         },
                       ),
-
-                isLastPage
-                    ? CustomElevatedButton(
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                        onPressed: () {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
-                            ),
-                          );
-                        },
-                        text: "Get Started",
-                      )
-                    : CustomTextButton(
-                      backgroundColor: Colors.black,
+                    CustomTextButton(
+                      backgroundColor: Colors.grey[800],
                       foregroundColor: Colors.white,
                       text: "Next",
                       onPressed: () {
