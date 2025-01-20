@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "168256967950",
+    "project_id": "safe-gaurd-2d853",
+    "storage_bucket": "safe-gaurd-2d853.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:168256967950:android:feca961fe09704869e335f",
+        "android_client_info": {
+          "package_name": "com.example.safegaurd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "168256967950-lo8t6v1ph5f90ocnbhg9et8rsfq14vdh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.safegaurd",
+            "certificate_hash": "b2a5bc825726fdea139cc3b9dfa419bae68fca31"
+          }
+        },
+        {
+          "client_id": "168256967950-1v8l1bhh7cptv32rmqj4bddhpv4u85r8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtTcLA-Tg5OQ2lLotOSBwofSQ2P83U57U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "168256967950-1v8l1bhh7cptv32rmqj4bddhpv4u85r8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
