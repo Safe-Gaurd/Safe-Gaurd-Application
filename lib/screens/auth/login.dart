@@ -31,22 +31,37 @@ class LoginScreenState extends State<LoginScreen>
     super.dispose();
   }
 
-  void loginWithEmail(){
-     setState(() {
+  void loginWithEmail() async{
+    if (!formKey.currentState!.validate())
+    {
+      toastMessage(
+            context: context,
+            message: "Please Fill All Fields",
+            leadingIcon: const Icon(Icons.message),
+          toastColor: Colors.yellow[300],
+          borderColor: Colors.orange,
+          );
+      return;
+    }
+
+    setState(() {
       isLoading=true;
     });
-    String res=authService.handleLoginWithEmail(email: email.text.trim(), password: password.text.trim()).toString();
+    String res=await authService.handleLoginWithEmail(email: email.text, password: password.text);
     if(res=="success")
     {
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomeScreen()));
     }
-    toastMessage(
-          context: context,
-          message: "Invalid Email Or Password",
-          leadingIcon: const Icon(Icons.error),
-          toastColor: Colors.red[200],
-          borderColor: Colors.red,
-        );
+    else
+    {
+      toastMessage(
+            context: context,
+            message: "Invalid Email Or Password",
+            leadingIcon: const Icon(Icons.error),
+            toastColor: Colors.red[200],
+            borderColor: Colors.red,
+          );
+    }
     setState(() {
       isLoading = false;
     });
@@ -68,7 +83,7 @@ class LoginScreenState extends State<LoginScreen>
                   Image.asset(
                     "assets/auth/login.jpg",
                     width: 300, 
-                    height: 300, 
+                    height: 350, 
                   ),
               
                   CustomTextFormField(
@@ -140,14 +155,14 @@ class LoginScreenState extends State<LoginScreen>
                         return;
                       }
                       toastMessage(context: context, message: res);
-                      isLoading = isgoogleLoading;
+                      isLoading = !isgoogleLoading;
                     }),
 
-                  const SizedBox(height: 15,),
+                  const SizedBox(height: 10,),
                   TextButton(onPressed: (){
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignupScreen()));
                         }, 
-                            child: const Text("Create New Account?", style: TextStyle(color: Colors.black54, fontSize: 15, fontWeight: FontWeight.bold),))
+                            child: const Text("Don't have an Account?", style: TextStyle(color: Colors.black54, fontSize: 15, fontWeight: FontWeight.bold),))
               
                 ],
               ),

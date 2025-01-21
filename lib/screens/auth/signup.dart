@@ -102,7 +102,7 @@ class SignupScreenState extends State<SignupScreen> {
                   Image.asset(
                     "assets/auth/signup.jpg",
                     width: 270,
-                    height: 280,
+                    height: 330,
                   ),
                   CustomTextFormField(
                     label: "Name",

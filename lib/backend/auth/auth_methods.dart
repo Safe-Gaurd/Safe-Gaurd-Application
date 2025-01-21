@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:safegaurd/backend/models/user.dart';
 
 class AuthService {
@@ -47,8 +48,13 @@ class AuthService {
   }) async {
     String res = "";
     try {
-      await auth.signInWithEmailAndPassword(email: email, password: password);
-      res = "success";
+      await FirebaseAppCheck.instance.activate();
+      final UserCredential result=await auth.signInWithEmailAndPassword(email: email, password: password);
+      final User? user = result.user;
+      if(user!=null)
+      {
+        res = "success";
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         res = 'No user found for that email.';
@@ -105,6 +111,17 @@ class AuthService {
     return res;
   }
 
+  // Forgot Password
+  Future<String> resetPassword(String email) async {
+    String res = '';
+    try {
+      await auth.sendPasswordResetEmail(email: email);
+      res = 'Password Reset Email Sent to $email';
+    } on FirebaseAuthException catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
 
   // Logout
   Future<void> logout() async {
