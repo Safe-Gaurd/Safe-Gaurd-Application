@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:safegaurd/constants/toast.dart';
+import 'package:safegaurd/constants/colors.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,33 +10,21 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
-   void initState() {
-    super.initState();
-
-    // Show the welcome toast when the screen is loaded
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      toastMessage(
-        context: context,
-        message: "Welcome Prakash!",
-        leadingIcon: const Icon(Icons.emoji_emotions),
-      );
-    });
-  }
-
-  
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: ElevatedButton(onPressed: (){
-    toastMessage(
-      context: context, 
-      message: "Hi Prakash", 
-      leadingIcon: const Icon(Icons.error_rounded),
-      toastColor: Colors.red[200],
-      borderColor: Colors.red
-      );
-        }, child: const Text("click")),
+      body: Column(
+        children: [
+          Container(
+            height: 200,
+            decoration: const BoxDecoration(
+              color: blueColor,
+            ),
+            child: Center(
+              child: Text('Welcome '),
+            ),
+          )
+        ],
       ),
-    );
+      );
   }
 }

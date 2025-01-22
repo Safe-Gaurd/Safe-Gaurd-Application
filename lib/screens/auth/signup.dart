@@ -5,7 +5,7 @@ import 'package:safegaurd/screens/auth/login.dart';
 import 'package:safegaurd/screens/auth/widgets/custom_auth_buttons.dart';
 import 'package:safegaurd/screens/auth/widgets/customtextformfield.dart';
 import 'package:safegaurd/backend/auth/auth_methods.dart';
-import 'package:safegaurd/screens/home/home.dart';
+import 'package:safegaurd/screens/home/main_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -62,7 +62,7 @@ class SignupScreenState extends State<SignupScreen> {
 
       if (res == "success") {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => const MainScreen()),
         );
       } else {
         toastMessage(
@@ -193,7 +193,7 @@ class SignupScreenState extends State<SignupScreen> {
                       String res=authService.handleSignUpWithGoogle().toString();
                       res=="success"
                       ? Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (context) => const HomeScreen()),
+                          MaterialPageRoute(builder: (context) => const MainScreen()),
                         )
                       : toastMessage(context: context, message: res);
 
