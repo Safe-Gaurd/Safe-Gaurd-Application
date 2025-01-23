@@ -5,7 +5,8 @@ import 'package:safegaurd/screens/auth/forgot_password.dart';
 import 'package:safegaurd/screens/auth/signup.dart';
 import 'package:safegaurd/screens/auth/widgets/custom_auth_buttons.dart';
 import 'package:safegaurd/screens/auth/widgets/customtextformfield.dart';
-import 'package:safegaurd/screens/home/main_screen.dart';
+import 'package:safegaurd/screens/home/feed_screen.dart';
+import 'package:safegaurd/screens/home/home.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -50,7 +51,7 @@ class LoginScreenState extends State<LoginScreen>
     String res=await authService.handleLoginWithEmail(email: email.text, password: password.text);
     if(res=="success")
     {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const MainScreen()));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomeScreen()));
     }
     else
     {
@@ -151,7 +152,7 @@ class LoginScreenState extends State<LoginScreen>
                       String res=authService.handleSignUpWithGoogle().toString();
                       if(res=="success")
                       {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MainScreen()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomeScreen()));
                         return;
                       }
                       toastMessage(context: context, message: res);
