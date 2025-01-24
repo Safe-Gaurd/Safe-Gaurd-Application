@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:safegaurd/backend/auth/auth_methods.dart';
+import 'package:safegaurd/constants/colors.dart';
 import 'package:safegaurd/constants/toast.dart';
 import 'package:safegaurd/screens/auth/forgot_password.dart';
 import 'package:safegaurd/screens/auth/signup.dart';
 import 'package:safegaurd/screens/auth/widgets/custom_auth_buttons.dart';
 import 'package:safegaurd/screens/auth/widgets/customtextformfield.dart';
-import 'package:safegaurd/screens/home/feed_screen.dart';
 import 'package:safegaurd/screens/home/home.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -51,7 +51,7 @@ class LoginScreenState extends State<LoginScreen>
     String res=await authService.handleLoginWithEmail(email: email.text, password: password.text);
     if(res=="success")
     {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomeScreen()));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomeScreen(isLoginOrSignUp: true,)));
     }
     else
     {
@@ -80,11 +80,41 @@ class LoginScreenState extends State<LoginScreen>
               key: formKey,
               child: Column(
                 children: [
-              
+                  
+                  const SizedBox(height: 20.0),
+                  const Row(
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      Text(
+                        "W",
+                        style: TextStyle(
+                          fontSize: 50.0,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      Text(
+                        "elcome back!",
+                        style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  Transform.translate(
+                    offset: const Offset(0, -14), 
+                    child: const Text(
+                      "Access your account to continue your journey",
+                      style: TextStyle(
+                        fontSize: 16.5,
+                        fontWeight: FontWeight.bold,
+                        color: blueColor,
+                      ),
+                    ),
+                  ),
+
                   Image.asset(
                     "assets/auth/login.jpg",
                     width: 300, 
-                    height: 350, 
+                    height: 310, 
                   ),
               
                   CustomTextFormField(

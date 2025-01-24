@@ -19,7 +19,7 @@ toastBar = DelightToastBar(
   builder: (context) => SizedBox(
     child: Container(
       decoration: BoxDecoration(
-        color: toastColor ?? Colors.grey[300], 
+        color: toastColor ?? Colors.blue[200], 
         border: Border.all(
           color: borderColor ?? Colors.grey[600]!, 
           width: 3.0,

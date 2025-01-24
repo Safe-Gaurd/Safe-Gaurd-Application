@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:safegaurd/constants/colors.dart';
 import 'package:safegaurd/constants/toast.dart';
-import 'package:safegaurd/screens/auth/forgot_password.dart';
 import 'package:safegaurd/screens/auth/login.dart';
 import 'package:safegaurd/screens/auth/widgets/custom_auth_buttons.dart';
 import 'package:safegaurd/screens/auth/widgets/customtextformfield.dart';
 import 'package:safegaurd/backend/auth/auth_methods.dart';
-import 'package:safegaurd/screens/home/feed_screen.dart';
 import 'package:safegaurd/screens/home/home.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -63,7 +62,7 @@ class SignupScreenState extends State<SignupScreen> {
 
       if (res == "success") {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => const HomeScreen(isLoginOrSignUp: true,)),
         );
       } else {
         toastMessage(
@@ -100,11 +99,43 @@ class SignupScreenState extends State<SignupScreen> {
               key: formKey,
               child: Column(
                 children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      const Text(
+                        "O",
+                        style: TextStyle(
+                          fontSize: 60.0,
+                        ),
+                      ),
+                      Transform.translate(
+                        offset: const Offset(0,-4),
+                        child: const Text(
+                          "nboard!",
+                          style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Transform.translate(
+                    offset: const Offset(-12, -22), 
+                    child: const Text(
+                      "Create an account to start your journey",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        color: blueColor,
+                      ),
+                    ),
+                  ),
+                    
                   Image.asset(
                     "assets/auth/signup.jpg",
                     width: 270,
-                    height: 330,
+                    height: 270,
                   ),
+                  const SizedBox(height: 20,),
                   CustomTextFormField(
                     label: "Name",
                     hinttext: "Enter Your Name",

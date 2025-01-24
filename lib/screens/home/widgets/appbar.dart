@@ -1,5 +1,6 @@
 // import 'package:flutter/material.dart';
 // import 'package:safegaurd/constants/colors.dart';
+// import 'package:safegaurd/screens/profile/user_profile.dart';
 
 // class CustomDesignAppBar extends StatelessWidget implements PreferredSizeWidget {
 //   const CustomDesignAppBar({super.key});
@@ -33,10 +34,21 @@
 //           },
 //         ),
 //         IconButton(
+//           // icon: provider.user.profileUrl != ''
+//           //     ? CircleAvatar(
+//           //         backgroundImage: NetworkImage(provider.user.profileUrl),
+//           //       )
+//           //     : CircleAvatar(
+//           //         child: Text(provider.user.name[0]),
+//           //       ),
 //           icon: const Icon(Icons.person_pin),
 //           tooltip: 'Profile',
 //           onPressed: () {
-//             // Action for Profile
+//             Navigator.of(context).push(
+//               MaterialPageRoute(
+//                 builder: (context) => const UserProfileScreen(),
+//               ),
+//             );
 //           },
 //         ),
 //         const SizedBox(width: 15),

@@ -1,9 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:safegaurd/screens/auth/login.dart';
+import 'package:safegaurd/screens/auth/signup.dart';
 // import 'package:safegaurd/screens/auth/forgot_password.dart';
 // import 'package:safegaurd/screens/auth/login.dart';
-import 'package:safegaurd/screens/home/feed_screen.dart';
+// import 'package:safegaurd/screens/home/feed_screen.dart';
+import 'package:safegaurd/screens/home/home.dart';
 // import 'package:safegaurd/screens/auth/login.dart';
 // import 'package:safegaurd/screens/onboarding/onboarding_main.dart';
 
@@ -27,7 +30,7 @@ class MyApp extends StatelessWidget {
             textTheme: GoogleFonts.dmSansTextTheme(
           Theme.of(context).textTheme,
         )),
-      home: const FeedScreen(),
+      home: const HomeScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
