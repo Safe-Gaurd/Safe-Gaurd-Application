@@ -48,11 +48,11 @@ void initState() {
         context: context,
         label: "Notifications",
         message: "Allow SafeGaurd to send notifications",
-        option1: "Yes",
+        option1: "Allow",
         onPressed1: () {
           Navigator.of(context).pop();
         },
-        option2: "No",
+        option2: "Deny",
         onPressed2: () {
         },
       );
@@ -63,11 +63,11 @@ void initState() {
         context: context,
         label: "Location",
         message: "Allow SafeGaurd to access the location",
-        option1: "Yes",
+        option1: "Allow",
         onPressed1: () {
           Navigator.of(context).pop();
         },
-        option2: "No",
+        option2: "Deny",
         onPressed2: () {
         },
       );

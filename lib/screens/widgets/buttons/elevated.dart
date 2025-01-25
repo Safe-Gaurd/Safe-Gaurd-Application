@@ -7,13 +7,17 @@ class CustomElevatedButton extends StatelessWidget
   final Color? foregroundColor;
   final String text;
   final VoidCallback? onPressed;
+  final double? borderRadius;
+  final TextStyle? textStyle;
 
   const CustomElevatedButton({
     super.key,
     this.backgroundColor,
     this.foregroundColor,
+    this.borderRadius,
     required this.text,
     this.onPressed,
+    this.textStyle,
     
     });
 
@@ -22,16 +26,16 @@ class CustomElevatedButton extends StatelessWidget
     return ElevatedButton
             (
               style: ButtonStyle(
-                backgroundColor: WidgetStatePropertyAll(backgroundColor),
-                foregroundColor: WidgetStatePropertyAll(foregroundColor),
+                backgroundColor: WidgetStatePropertyAll(backgroundColor ?? Colors.blue[100]),
+                foregroundColor: WidgetStatePropertyAll(foregroundColor ?? Colors.black),
                 shape: WidgetStatePropertyAll(
                   RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(borderRadius ?? 10),
                   ),
                 )
                 ),
               onPressed: onPressed,
-              child: Text(text),
+              child: Text(text, style: textStyle,),
             );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safegaurd/screens/widgets/buttons/elevated.dart';
 
 class CustomDialog{
 
@@ -55,46 +56,31 @@ class CustomDialog{
                   SizedBox(
                     height: 50,
                     width: double.infinity,
-                    child: ElevatedButton( 
-                      style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.black,
-                          backgroundColor: Colors.blue[100],
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                          )
-                      ),
-                      onPressed: onPressed1,
-                      child: Text(
-                        option1,
-                        style: const TextStyle(
+                    child: CustomElevatedButton(
+                      borderRadius: 15, 
+                      text: option1,
+                      textStyle: const TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
                         ),
-                      )
+                      onPressed: onPressed1,
                     ),
                   ),
 
                   const SizedBox(height: 10),
+
                   //option2
                   SizedBox(
                     height: 50,
                     width: double.infinity,
-                    child: ElevatedButton( 
-                      style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.black,
-                          backgroundColor: Colors.blue[100],
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                          )
-                      ),
-                      onPressed: onPressed2,
-                      child: Text(
-                        option2,
-                        style: const TextStyle(
+                    child: CustomElevatedButton(
+                      borderRadius: 15, 
+                      text: option2,
+                      textStyle: const TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
                         ),
-                      )
+                      onPressed: onPressed2,
                     ),
                   ),
                 ],

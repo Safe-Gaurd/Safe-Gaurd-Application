@@ -48,7 +48,7 @@ class CustomTextFormField extends StatelessWidget {
           labelStyle: const TextStyle(color: Colors.black),
           floatingLabelStyle: TextStyle(color: Colors.blue[600] ?? Colors.blue), 
           prefixIcon: Icon(prefixicon),
-          suffixIcon: suffixicon
+          suffixIcon: suffixicon,
         ),
         validator: validator,
         obscureText: isobsure,

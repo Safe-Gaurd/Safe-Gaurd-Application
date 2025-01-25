@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:safegaurd/constants/colors.dart';
-import 'package:safegaurd/screens/home/widgets/custom_card.dart';
+import 'package:safegaurd/screens/feed_sub_screens/phone_call.dart';
+import 'package:safegaurd/screens/feed_sub_screens/report_analysis.dart';
+import 'package:safegaurd/screens/feed_sub_screens/weather.dart';
+import 'package:safegaurd/screens/home/home.dart';
+import 'package:safegaurd/screens/home/widgets/custom_card_button.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({super.key});
@@ -43,11 +47,60 @@ class FeedScreenState extends State<FeedScreen> {
         
             //Buttons
             const SizedBox(height: 20,),
-            const CustomCard(),
+            customCard(context),
           ],
         ),
       ),
       );
+  }
+
+  Widget customCard(BuildContext context){
+    return SizedBox(
+      height: 400,
+      child: GridView.count(
+        crossAxisCount: 2,
+        mainAxisSpacing: 15,
+        crossAxisSpacing: 15,
+        children: [
+          CustomCardButton(
+            title: "Weather",
+            imagePath: "assets/home/weather.JPG",
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const WeatherScreen()));
+            },
+            gradient: LinearGradient(colors: [Colors.blue[300]!, Colors.blue[600]!]),
+          ),
+          CustomCardButton(
+            title: "Start Journey",
+            imagePath: "assets/home/maps.jpg",
+            width: 85,
+            height: 85,
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const HomeScreen(initialIndex: 1,)));
+            },
+            gradient: LinearGradient(colors: [Colors.green[300]!, Colors.green[600]!]),
+          ),
+          CustomCardButton(
+            title: "Emergency",
+            imagePath: "assets/home/emergency.jpg",
+            gradient: LinearGradient(colors: [Colors.red[300]!, Colors.red[600]!]),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const PhoneCallScreen()));
+            },
+          ),
+          CustomCardButton(
+            title: "Reports Analysis",
+            imagePath: "assets/home/accident_analysis.jpg",
+            width: 85,
+            height: 85,
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=> const ReportAnalysisScreen()));
+            },
+            gradient: LinearGradient(colors: [Colors.orange[300]!, Colors.orange[600]!]),
+          ),
+        ],
+      ),
+    );
   }
 
 }

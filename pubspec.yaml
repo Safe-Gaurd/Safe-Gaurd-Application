@@ -47,6 +47,7 @@ dependencies:
   google_fonts: ^6.2.1
   firebase_app_check: ^0.2.2+7
   persistent_bottom_nav_bar: ^6.2.1
+  flutter_phone_direct_caller: ^2.1.1
 
 dev_dependencies:
   flutter_test:
@@ -76,6 +77,7 @@ flutter:
     - assets/onboarding_screen/
     - assets/auth/
     - assets/home/
+    - assets/call/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

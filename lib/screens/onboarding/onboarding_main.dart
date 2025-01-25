@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:safegaurd/screens/auth/login.dart';
 import 'package:safegaurd/screens/onboarding/widgets/onboarding_sub.dart';
 import 'package:safegaurd/screens/widgets/buttons/elevated.dart';
-import 'package:safegaurd/screens/widgets/buttons/text.dart';
+import 'package:safegaurd/screens/widgets/buttons/textfield.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingMainScreen extends StatefulWidget {
