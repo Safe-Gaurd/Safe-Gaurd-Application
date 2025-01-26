@@ -29,8 +29,8 @@ class WeatherModel {
      temperature: Temperature.fromJson(json['main']['temp']),
       humidity: json['main']['humidity'],
       wind: Wind.fromJson(json['wind']),
-      maxTemperature: (json['main']['temp_max'] - 273.15), // Kelvin to Celsius
-      minTemperature: (json['main']['temp_min'] - 273.15), // Kelvin to Celsius
+      maxTemperature: (json['main']['temp_max'] - 273.15),
+      minTemperature: (json['main']['temp_min'] - 273.15), 
       pressure: json['main']['pressure'],
       seaLevel: json['main']['sea_level'] ?? 0,
       weather: List<WeatherInfo>.from(
@@ -63,7 +63,7 @@ class Temperature {
 
   static Temperature fromJson(dynamic json) {
     return Temperature(
-      current: (json - 273.15), // Kelvin to Celsius
+      current: (json - 273.15), 
     );
   }
 }

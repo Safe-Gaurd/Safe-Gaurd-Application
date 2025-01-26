@@ -52,11 +52,18 @@ class WeatherScreenState extends State<WeatherScreen>
       body: Center(
         child: isLoading
             ? const Center(child: CircularProgressIndicator(color: Colors.blue,))
-            : WeatherDetail(
-                weather: weatherInfo,
-                formattedDate: formattedDate,
-                formattedTime: formattedTime,
+            : SingleChildScrollView(
+              child: Column(
+                children: [
+                  WeatherDetail(
+                      weather: weatherInfo,
+                      formattedDate: formattedDate,
+                      formattedTime: formattedTime,
+                    ),
+                    const SizedBox(height: 20,),
+                ],
               ),
+            ),
       ),
     );
   }
@@ -150,23 +157,36 @@ class WeatherDetail extends StatelessWidget {
                       ),
                       
                       // for current date and time
-                      Text(
-                        formattedDate,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          const Icon(Icons.calendar_today, color: Colors.white, size: 16),
+                          const SizedBox(width: 5),
+                          Text(
+                            formattedDate,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        formattedTime,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          const Icon(Icons.access_time, color: Colors.white, size: 16),
+                          const SizedBox(width: 5),
+                          Text(
+                            formattedTime,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
                       ),
-
                       if (weather.weather.isNotEmpty)
                         Text(
                           weather.weather[0].main,

@@ -12,6 +12,7 @@ import 'package:safegaurd/screens/feed_sub_screens/weather.dart';
 // import 'package:safegaurd/screens/auth/login.dart';
 // import 'package:safegaurd/screens/home/feed_screen.dart';
 import 'package:safegaurd/screens/home/home.dart';
+import 'package:safegaurd/screens/onboarding/onboarding_main.dart';
 // import 'package:safegaurd/screens/auth/login.dart';
 // import 'package:safegaurd/screens/onboarding/onboarding_main.dart';
 

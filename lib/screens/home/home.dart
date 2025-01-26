@@ -14,26 +14,24 @@ import 'package:safegaurd/screens/profile/user_profile.dart';
 import 'package:safegaurd/screens/settings/settings.dart';
 import 'package:safegaurd/screens/support&help/help.dart';
 import 'package:safegaurd/constants/dialog.dart';
+import 'package:safegaurd/screens/widgets/appbar.dart';
 
 class HomeScreen extends StatefulWidget {
-  final int? initialIndex;
   final bool isLoginOrSignUp;
-  const HomeScreen({super.key, this.initialIndex=0, this.isLoginOrSignUp=false}); 
+  const HomeScreen({super.key, this.isLoginOrSignUp=false}); 
 
   @override
   State<HomeScreen> createState() => HomeScreenState();
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  late int currentIndex;
+  late int currentIndex=0;
   final GlobalKey<ScaffoldState> _scaffoldKey=GlobalKey();
 
   @override
   @override
 void initState() {
     super.initState();
-    currentIndex = widget.initialIndex ?? 0;
-
     // Display toast immediately
     if (widget.isLoginOrSignUp) {
       toastMessage(
@@ -45,7 +43,7 @@ void initState() {
     }
 
     // Delayed execution for dialogs
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 1), () {
       const CustomDialog().showLogoutDialog(
         context: context,
         label: "Notifications",
@@ -60,20 +58,20 @@ void initState() {
       );
     });
 
-    Future.delayed(const Duration(seconds: 10), () {
-      const CustomDialog().showLogoutDialog(
-        context: context,
-        label: "Location",
-        message: "Allow SafeGaurd to access the location",
-        option1: "Allow",
-        onPressed1: () {
-          Navigator.of(context).pop();
-        },
-        option2: "Deny",
-        onPressed2: () {
-        },
-      );
-    });
+    // Future.delayed(const Duration(seconds: 10), () {
+    //   const CustomDialog().showLogoutDialog(
+    //     context: context,
+    //     label: "Location",
+    //     message: "Allow SafeGaurd to access the location",
+    //     option1: "Allow",
+    //     onPressed1: () {
+    //       Navigator.of(context).pop();
+    //     },
+    //     option2: "Deny",
+    //     onPressed2: () {
+    //     },
+    //   );
+    // });
 
     getData();
 }
@@ -100,7 +98,7 @@ void getData() async {
             )
           : Scaffold(
         key: _scaffoldKey,
-        appBar: customAppBar(provider: userProvider),
+        appBar: const CustomAppbar(label: "",),
         drawer: customNavigationBar(provider: userProvider),
         body: screens[currentIndex],
         bottomNavigationBar: BottomNavigationBar(
@@ -137,54 +135,6 @@ void getData() async {
     );
   }
 
-  AppBar customAppBar({required UserProvider provider}) {
-    return AppBar(
-      backgroundColor: blueColor,
-      toolbarHeight: 70,
-      leading: Builder(
-        builder: (context) => IconButton(
-          icon: const Icon(Icons.menu),
-          tooltip: 'Open Menu',
-          onPressed: () {
-            _scaffoldKey.currentState?.openDrawer();
-          },
-        ),
-      ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.help_outline_sharp),
-          tooltip: 'Help',
-          onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const SupportHelpScreen()));
-          },
-        ),
-        IconButton(
-          icon: const Icon(Icons.notifications),
-          tooltip: 'Notifications',
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const NotificationScreen()));
-          },
-        ),
-        IconButton(
-          icon: provider.user.photoURL != ''
-              ? CircleAvatar(
-                  backgroundImage: NetworkImage(provider.user.photoURL!),
-                )
-              : CircleAvatar(
-                  child: Text(provider.user.name[0]),
-                ),
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const HomeScreen(initialIndex: 2,),
-              ),
-            );
-          },
-        ),
-        const SizedBox(width: 15),
-      ],
-    );
-  }
 
   Drawer customNavigationBar({required UserProvider provider}){
     return Drawer(
@@ -217,44 +167,13 @@ void getData() async {
                     ),
                   ),
           ),
-            // InkWell(
-            //   child: Container(
-            //     padding: const EdgeInsets.all(5),
-            //     decoration: const BoxDecoration(
-            //       color: blueColor
-            //     ),
-            //     height: 250,
-            //     child: Column(
-            //       mainAxisAlignment: MainAxisAlignment.center,
-            //       crossAxisAlignment: CrossAxisAlignment.center,
-            //       children: [
-            //         Center(
-            //           child: ClipOval(
-            //             child: Image.asset(
-            //               'assets/home/profile.jpg',
-            //               width: 110,
-            //               height: 110,
-            //               fit: BoxFit.contain,
-            //             ),
-            //           ),
-            //         ),
-            //         const SizedBox(height:20),
-            //         const Text("Lokesh Surya Prakash", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: backgroundColor),),
-            //         const Text("lokesh@gmail.com", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: backgroundColor)),
-            //       ],
-            //     ),
-            //   ),
-            //   onTap: () {
-            //     Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const HomeScreen(initialIndex: 2,)));
-            //   },
-            // ),
             const SizedBox(height: 10),
 
             Navbaritems(icon: Icons.home, label: "Home", onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const HomeScreen()));
               },),
             Navbaritems(icon: Icons.person, label: "Profile", onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const HomeScreen(initialIndex: 2,)));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const UserProfileScreen()));
               },),
             Navbaritems(icon: Icons.notifications, label: "Notifications", onTap:  () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const NotificationScreen()));
@@ -268,12 +187,12 @@ void getData() async {
                   context: context, 
                   label: "LogOut", 
                   message: "Are you sure you want to  Log Out?", 
-                  option1: "Cancel",
-                  onPressed1: () {
+                  option2: "Cancel",
+                  onPressed2: () {
                     Navigator.of(context).pop();
                   }, 
-                  option2: "Yes",
-                  onPressed2: () {
+                  option1: "Yes",
+                  onPressed1: () {
                        AuthService().logout();
                        Navigator.of(context)
                            .pushReplacement(MaterialPageRoute(builder: (context)=> const LoginScreen()));

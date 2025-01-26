@@ -65,52 +65,55 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Lottie.asset(
-              'assets/auth/forgot_password.json',
-              height: 200,
-              repeat: false,
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            const Text(
-              textAlign: TextAlign.center,
-              'Receive an Email to\nReset Your Password',
-              maxLines: 2,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            CustomTextFormField(
-              controller: emailController,
-              label: 'Email',
-              hinttext: 'Enter Email Address',
-              prefixicon: Icons.email,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Email is required';
-                } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                  return 'Enter a valid email';
-                }
-                return null;
-              },
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            LoginSignupButtons(
-                onTap: () => resetPassword(),
-                label: 'Reset Password',
-                backgroundColor: Colors.blue, 
-                isLoading: isLoading,
-            ),
-          ],
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Lottie.asset(
+                'assets/auth/forgot_password.json',
+                height: 200,
+                repeat: false,
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              const Text(
+                textAlign: TextAlign.center,
+                'Receive an Email to\nReset Your Password',
+                maxLines: 2,
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 40,
+              ),
+              CustomTextFormField(
+                controller: emailController,
+                label: 'Email',
+                hinttext: 'Enter Email Address',
+                prefixicon: Icons.email,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Email is required';
+                  } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                    return 'Enter a valid email';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              LoginSignupButtons(
+                  onTap: () => resetPassword(),
+                  label: 'Reset Password',
+                  backgroundColor: Colors.blue, 
+                  isLoading: isLoading,
+              ),
+            ],
+          ),
         ),
       ),
     );

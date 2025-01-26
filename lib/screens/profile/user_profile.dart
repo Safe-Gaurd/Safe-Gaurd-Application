@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:safegaurd/backend/auth/auth_methods.dart';
 import 'package:safegaurd/backend/providers/user_provider.dart';
+import 'package:safegaurd/constants/colors.dart';
+import 'package:safegaurd/constants/dialog.dart';
+import 'package:safegaurd/screens/auth/login.dart';
 import 'package:safegaurd/screens/notifications/notification.dart';
 import 'package:safegaurd/screens/profile/change_password.dart';
 import 'package:safegaurd/screens/profile/edit_profile.dart';
@@ -15,7 +19,6 @@ class UserProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(builder: (context, provider, _) {
       return Scaffold(
-        
         body: SafeArea(
           child: Column(
             children: [
@@ -29,6 +32,8 @@ class UserProfileScreen extends StatelessWidget {
                       children: [
                         provider.user.photoURL == ''
                             ? CircleAvatar(
+                              radius: 60,
+                              backgroundColor: blueColor,
                                 child: Text(
                                   provider.user.name[0],
                                   style: const TextStyle(
@@ -155,8 +160,24 @@ class UserProfileScreen extends StatelessWidget {
                     ProfileMenuItem(
                       icon: Icons.logout,
                       text: 'Logout',
-                      onTap: () => _showLogoutDialog(context),
-                      textColor: Colors.red, // Highlight Logout item
+                      onTap: (){
+                        const CustomDialog().showLogoutDialog(
+                          context: context, 
+                          label: "LogOut", 
+                          message: "Are you sure you want to  Log Out?", 
+                          option2: "Cancel",
+                          onPressed2: () {
+                            Navigator.of(context).pop();
+                          }, 
+                          option1: "Yes",
+                          onPressed1: () {
+                              AuthService().logout();
+                              Navigator.of(context)
+                                  .pushReplacement(MaterialPageRoute(builder: (context)=> const LoginScreen()));
+                            },
+                        );
+                      },
+                      textColor: Colors.red, 
                     ),
                   ],
                 ),
@@ -166,68 +187,6 @@ class UserProfileScreen extends StatelessWidget {
         ),
       );
     });
-  }
-
-  void _showLogoutDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const Text(
-                    'Logout',
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.blue,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Are you sure you want to logout?',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      TextButton(
-                        child: const Text('Cancel'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white,
-                            backgroundColor: Colors.blue),
-                        onPressed: onTap,
-                        child: const Text(
-                          'Logout',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
   }
 }
 
