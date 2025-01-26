@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:safegaurd/backend/providers/user_provider.dart';
 import 'package:safegaurd/screens/auth/login.dart';
 import 'package:safegaurd/screens/auth/signup.dart';
 import 'package:safegaurd/screens/feed_sub_screens/fav_person_call.dart';
@@ -27,14 +29,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'SafeGuard',
-      theme: ThemeData().copyWith(
-            textTheme: GoogleFonts.dmSansTextTheme(
-          Theme.of(context).textTheme,
-        )),
-      home: const WeatherScreen(),
-      debugShowCheckedModeBanner: false,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context)=> UserProvider())
+      ],
+      child: MaterialApp(
+        title: 'SafeGuard',
+        theme: ThemeData().copyWith(
+              textTheme: GoogleFonts.dmSansTextTheme(
+            Theme.of(context).textTheme,
+          )),
+        home: const HomeScreen(),
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }

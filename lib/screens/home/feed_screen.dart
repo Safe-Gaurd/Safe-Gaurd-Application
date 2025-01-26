@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:safegaurd/backend/providers/user_provider.dart';
 import 'package:safegaurd/constants/colors.dart';
 import 'package:safegaurd/screens/feed_sub_screens/phone_call.dart';
 import 'package:safegaurd/screens/feed_sub_screens/report_analysis.dart';
@@ -16,42 +18,53 @@ class FeedScreen extends StatefulWidget {
 class FeedScreenState extends State<FeedScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              height: 150,
-              decoration: const BoxDecoration(
-                color: blueColor,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(50),
-                  bottomRight: Radius.circular(50),
-                )
-              ),
-              child: const Center(
-                child: Column(
-                  children: [
-                    Text("Wekcome, \nLokesh Surya Prakash", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),)
-                  ],
+    return Consumer<UserProvider>(builder: (context, provider, _)
+    {
+      return provider.isLoading
+      ? const Center(
+        child: CircularProgressIndicator(),
+      )
+      : Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                height: 150,
+                decoration: const BoxDecoration(
+                  color: blueColor,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(50),
+                    bottomRight: Radius.circular(50),
+                  )
+                ),
+                child: Center(
+                  child: Column(
+                    children: [
+                      Text(
+                        provider.user.name, 
+                        style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),)
+                    ],
+                  ),
                 ),
               ),
-            ),
-            
-            //Weather Box
-            const SizedBox(height: 20,),
-            Container(
-              height: 100,
-              color: Colors.grey,
-            ),
-        
-            //Buttons
-            const SizedBox(height: 20,),
-            customCard(context),
-          ],
+              
+              //Weather Box
+              const SizedBox(height: 20,),
+              Container(
+                height: 100,
+                color: Colors.blue[200],
+                
+              ),
+          
+              //Buttons
+              const SizedBox(height: 20,),
+              customCard(context),
+            ],
+          ),
         ),
-      ),
-      );
+        );
+      }
+    );
   }
 
   Widget customCard(BuildContext context){

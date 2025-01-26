@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
-import 'package:safegaurd/backend/models/user.dart';
+import 'package:safegaurd/backend/models/user_model.dart';
 
 class AuthService {
   final FirebaseAuth auth = FirebaseAuth.instance;

@@ -1,6 +1,8 @@
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:safegaurd/backend/auth/auth_methods.dart';
+import 'package:safegaurd/backend/providers/user_provider.dart';
 import 'package:safegaurd/constants/colors.dart'; 
 import 'package:safegaurd/constants/toast.dart';
 import 'package:safegaurd/screens/auth/login.dart';
@@ -72,6 +74,13 @@ void initState() {
         },
       );
     });
+
+    getData();
+}
+
+void getData() async {
+    UserProvider userProvider=Provider.of(context, listen: false);
+    await userProvider.fetchUser();
 }
 
 
@@ -83,44 +92,52 @@ void initState() {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: customAppBar(context),
-      drawer: customNavigationBar(context),
-      body: screens[currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+    return Consumer<UserProvider>(builder: (context, userProvider, _)
+    {
+      return userProvider.isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Scaffold(
+        key: _scaffoldKey,
+        appBar: customAppBar(provider: userProvider),
+        drawer: customNavigationBar(provider: userProvider),
+        body: screens[currentIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: currentIndex,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.location_on),
+              label: 'Navigation',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_pin),
+              label: 'Profile',
+            ),
+          ],
+          onTap: (index) {
+            setState(() {
+              currentIndex = index;
+            });
+          },
+          selectedItemColor: Colors.blue,
+          unselectedItemColor: Colors.grey,
+          iconSize: 30,
+          selectedLabelStyle: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.location_on),
-            label: 'Navigation',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_pin),
-            label: 'Profile',
-          ),
-        ],
-        onTap: (index) {
-          setState(() {
-            currentIndex = index;
-          });
-        },
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        iconSize: 30,
-        selectedLabelStyle: const TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.bold,
         ),
-      ),
+      );
+    }
     );
   }
 
-  AppBar customAppBar(BuildContext context) {
+  AppBar customAppBar({required UserProvider provider}) {
     return AppBar(
       backgroundColor: blueColor,
       toolbarHeight: 70,
@@ -149,15 +166,13 @@ void initState() {
           },
         ),
         IconButton(
-          // icon: provider.user.profileUrl != ''
-          //     ? CircleAvatar(
-          //         backgroundImage: NetworkImage(provider.user.profileUrl),
-          //       )
-          //     : CircleAvatar(
-          //         child: Text(provider.user.name[0]),
-          //       ),
-          icon: const Icon(Icons.person_pin),
-          tooltip: 'Profile',
+          icon: provider.user.photoURL != ''
+              ? CircleAvatar(
+                  backgroundImage: NetworkImage(provider.user.photoURL!),
+                )
+              : CircleAvatar(
+                  child: Text(provider.user.name[0]),
+                ),
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
@@ -171,68 +186,68 @@ void initState() {
     );
   }
 
-  Drawer customNavigationBar(BuildContext context){
+  Drawer customNavigationBar({required UserProvider provider}){
     return Drawer(
       backgroundColor: backgroundColor,
       child: SingleChildScrollView(
         child: Column(
           children: [
-          //   UserAccountsDrawerHeader(
-          //   decoration: const BoxDecoration(color: blueColor),
-          //   onDetailsPressed: () => Navigator.of(context).push(
-          //       MaterialPageRoute(
-          //           builder: (context) => const UserProfileScreen())),
-          //   accountName: Text(
-          //     provider.user.name,
-          //     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          //   ),
-          //   accountEmail: Text(
-          //     provider.user.email,
-          //     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-          //   ),
-          //   currentAccountPicture: provider.user.profileUrl != ''
-          //       ? CircleAvatar(
-          //           backgroundImage: NetworkImage(provider.user.profileUrl),
-          //         )
-          //       : CircleAvatar(
-          //           child: Text(
-          //             provider.user.name[0],
-          //             style: const TextStyle(
-          //                 fontSize: 24, fontWeight: FontWeight.bold),
-          //           ),
-          //         ),
-          // ),
-            InkWell(
-              child: Container(
-                padding: const EdgeInsets.all(5),
-                decoration: const BoxDecoration(
-                  color: blueColor
-                ),
-                height: 250,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: ClipOval(
-                        child: Image.asset(
-                          'assets/home/profile.jpg',
-                          width: 110,
-                          height: 110,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height:20),
-                    const Text("Lokesh Surya Prakash", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: backgroundColor),),
-                    const Text("lokesh@gmail.com", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: backgroundColor)),
-                  ],
-                ),
-              ),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const HomeScreen(initialIndex: 2,)));
-              },
+            UserAccountsDrawerHeader(
+            decoration: const BoxDecoration(color: blueColor),
+            onDetailsPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (context) => const UserProfileScreen())),
+            accountName: Text(
+              provider.user.name,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
+            accountEmail: Text(
+              provider.user.email,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+            currentAccountPicture: provider.user.photoURL != ''
+                ? CircleAvatar(
+                    backgroundImage: NetworkImage(provider.user.photoURL!),
+                  )
+                : CircleAvatar(
+                    child: Text(
+                      provider.user.name[0],
+                      style: const TextStyle(
+                          fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+          ),
+            // InkWell(
+            //   child: Container(
+            //     padding: const EdgeInsets.all(5),
+            //     decoration: const BoxDecoration(
+            //       color: blueColor
+            //     ),
+            //     height: 250,
+            //     child: Column(
+            //       mainAxisAlignment: MainAxisAlignment.center,
+            //       crossAxisAlignment: CrossAxisAlignment.center,
+            //       children: [
+            //         Center(
+            //           child: ClipOval(
+            //             child: Image.asset(
+            //               'assets/home/profile.jpg',
+            //               width: 110,
+            //               height: 110,
+            //               fit: BoxFit.contain,
+            //             ),
+            //           ),
+            //         ),
+            //         const SizedBox(height:20),
+            //         const Text("Lokesh Surya Prakash", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: backgroundColor),),
+            //         const Text("lokesh@gmail.com", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: backgroundColor)),
+            //       ],
+            //     ),
+            //   ),
+            //   onTap: () {
+            //     Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const HomeScreen(initialIndex: 2,)));
+            //   },
+            // ),
             const SizedBox(height: 10),
 
             Navbaritems(icon: Icons.home, label: "Home", onTap: () {

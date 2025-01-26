@@ -1,52 +1,281 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:safegaurd/backend/models/weather.dart';
+import 'package:safegaurd/backend/services/weather_services.dart';
 import 'package:safegaurd/screens/widgets/appbar.dart';
+import 'package:safegaurd/constants/date_time.dart';
 
-class WeatherScreen extends StatelessWidget {
+class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key});
 
-  // Async function to fetch weather data
-  Future<void> fetchWeather() async {
-    const String apiKey = "36b222ee5cc0a2ccd4163f903bf8b1f8";
-    const String latitude = "16.5681";
-    const String longitude = "81.815221";
+  @override
+  WeatherScreenState createState() => WeatherScreenState();
+}
 
-    final Uri url = Uri.parse(
-        "https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey");
+class WeatherScreenState extends State<WeatherScreen> 
+{
+  late WeatherModel weatherInfo;
+  bool isLoading = false;
+  myWeather() {
+    setState(() {
+      isLoading = true;
+    });
+    WeatherServices().fetchWeather().then((value) {
+      setState(() {
+        weatherInfo = value;
+        isLoading = false;
+      });
+    });
+  }
 
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        final json = jsonDecode(response.body);
-        final weather = WeatherModel.fromJson(json);
-
-        // Debugging the weather data
-        print(weather.maxTemperature);
-
-        // Optional: Process or store the fetched data here
-      } else {
-        throw Exception('Failed to load weather data: ${response.statusCode}');
-      }
-    } catch (e) {
-      // Logging the error
-      debugPrint("Error fetching weather data: $e");
-    }
+  @override
+  void initState() {
+    weatherInfo = WeatherModel(
+      name: '',
+      temperature: Temperature(current: 0.0),
+      humidity: 0,
+      wind: Wind(speed: 0.0),
+      maxTemperature: 0,
+      minTemperature: 0,
+      pressure: 0,
+      seaLevel: 0,
+      weather: [],
+    );
+    myWeather();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppbar(
-        label: "Weather",
-      ),
+      appBar: const CustomAppbar(label: "Weather"),
+      backgroundColor: Colors.blue[100],
       body: Center(
-        child: ElevatedButton(
-          onPressed: fetchWeather,
-          child: const Text("Fetch Weather"),
-        ),
+        child: isLoading
+            ? const Center(child: CircularProgressIndicator(color: Colors.blue,))
+            : WeatherDetail(
+                weather: weatherInfo,
+                formattedDate: formattedDate,
+                formattedTime: formattedTime,
+              ),
       ),
+    );
+  }
+}
+
+class WeatherDetail extends StatelessWidget {
+  final WeatherModel weather;
+  final String formattedDate;
+  final String formattedTime;
+  final String imagePath="assets/weather/sunny.jpg";
+  const WeatherDetail({
+    super.key,
+    required this.weather,
+    required this.formattedDate,
+    required this.formattedTime,
+  });
+
+  String updateImagePath()
+  {
+    if(weather.weather[0].main.contains("Clouds"))
+    {
+      return "assets/weather/cloudy.jpg";
+    }
+    else if(weather.weather[0].main.contains("Rain"))
+    {
+      return "assets/weather/rainy.jpg";
+    }  
+    else
+    {
+      return "assets/weather/sunny.jpg";
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(
+        height: 350,
+        width: double.infinity,
+        child: ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(30)),
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              // Image with reduced opacity
+              ColorFiltered(
+                colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.15), BlendMode.darken),
+                child: Image.asset(
+                  updateImagePath(),
+                  height: 350,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              // Column for text
+              Align(
+                alignment: Alignment.centerRight, 
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0), 
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Current temperature
+                      Text(
+                        "${weather.temperature.current.toStringAsFixed(2)}°C",
+                        style: const TextStyle(
+                          fontSize: 50,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end, // Align icon and text to the right
+                        children: [
+                          const Icon(
+                            Icons.location_on,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                          Text(
+                            weather.name,
+                            style: const TextStyle(
+                              fontSize: 25,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      
+                      // for current date and time
+                      Text(
+                        formattedDate,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        formattedTime,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                      if (weather.weather.isNotEmpty)
+                        Text(
+                          weather.weather[0].main,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+                    ],
+                  ),
+                ),
+              ),
+      
+          const SizedBox(height: 10),
+          
+          // for more weather detail
+          Container(
+            height: 250,
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      weatherInfoCard(
+                          icon:  const Icon(Icons.wind_power,color: Colors.white),
+                          title: "Wind", value: "${weather.wind.speed}km/h"
+                        ),
+                      weatherInfoCard(
+                        icon: const Icon(Icons.sunny,color: Colors.yellow),
+                        title: "Max",
+                        value:"${weather.maxTemperature.toStringAsFixed(2)}°C"),
+                      weatherInfoCard(
+                        icon: const Icon(Icons.sunny,color: Colors.yellow),
+                        title: "Min",
+                        value:"${weather.minTemperature.toStringAsFixed(2)}°C"),
+                    ],
+                  ),
+                  const Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      weatherInfoCard(
+                        icon: const Icon(Icons.water_drop,color: Colors.blue),
+                        title: "Humidity", 
+                        value: "${weather.humidity}%"),
+                      weatherInfoCard(
+                        icon: const Icon(Icons.air,color: Colors.white),
+                        title: "Pressure", 
+                        value: "${weather.pressure}hPa"),
+                      weatherInfoCard(
+                        icon: const Icon(Icons.waves,color: Colors.blue),
+                        title: "Sea-Level", 
+                        value: "${weather.seaLevel}m"),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  Column weatherInfoCard({
+    required Icon icon,
+    required String title, 
+    required String value
+  })
+  {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        icon,
+        const SizedBox(height: 5),
+        Column(
+      children: [
+        Text(
+          value,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        Text(
+          title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+            fontSize: 16,
+          ),
+        )
+      ],
+        )
+      ],
     );
   }
 }
