@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:safegaurd/backend/providers/user_provider.dart';
 import 'package:safegaurd/constants/colors.dart';
+import 'package:safegaurd/constants/toast.dart';
 import 'package:safegaurd/screens/auth/widgets/customtextformfield.dart';
+import 'package:safegaurd/screens/widgets/buttons/elevated.dart';
 
 class EditProfileScreen extends StatelessWidget {
   const EditProfileScreen({super.key});
@@ -13,7 +15,6 @@ class EditProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<UserProvider>(
       builder: (context, provider, child) {
-        final user = provider.user;
         return provider.isLoading
         ? const Center(
           child: CircularProgressIndicator()
@@ -120,52 +121,36 @@ class EditProfileScreen extends StatelessWidget {
           const SizedBox(height: 20),
           SizedBox(
             width: 180,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.blue,
-              ),
-              onPressed: () async {
-                String res = await provider.updateUserDetails(
-                  name: nameController.text, 
-                  email: emailController.text, 
-                  phonenumber: phoneNumberController.text, 
-                  photoURL: provider.photoURL ?? provider.user.photoURL!, 
-                  location: locationController.text
-                );
-                    
-                if (res == 'update') {
-                  showToast(context, 'Profile Updated Successfully');
-                } else {
-                  showToast(context, 'Retry again, profile not updated');
-                }
-              },
-              child: provider.isUpdate
+            child:provider.isUpdate
                   ? const Center(
                       child: CupertinoActivityIndicator(),
                     )
-                  : const Text(
-                      'Update',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                    ),
-            ),
-          ),
+                  : CustomElevatedButton(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.blue,
+                    text: "Update",
+                    onPressed: () async {
+                      String res = await provider.updateUserDetails(
+                        name: nameController.text, 
+                        email: emailController.text, 
+                        phonenumber: phoneNumberController.text, 
+                        photoURL: provider.photoURL ?? provider.user.photoURL!, 
+                        location: locationController.text
+                      );
+                          
+                      if (res == 'update') {
+                        toastMessage(context: context, message:'Profile Updated Successfully');
+                      } else {
+                        toastMessage(context: context, message:'Retry again, profile not updated');
+                      }
+                    },
+                  ),
+                ),
         ]
       ),
     );
   }
 
-  void showToast(BuildContext context, String message) {
-    if (ScaffoldMessenger.maybeOf(context) != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-    }
-  }
 
   void showImagePicker(BuildContext context, UserProvider provider) {
     showDialog(

@@ -1,20 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:safegaurd/backend/providers/user_provider.dart';
-import 'package:safegaurd/screens/auth/login.dart';
-import 'package:safegaurd/screens/auth/signup.dart';
-import 'package:safegaurd/screens/feed_sub_screens/fav_person_call.dart';
-import 'package:safegaurd/screens/feed_sub_screens/phone_call.dart';
-import 'package:safegaurd/screens/feed_sub_screens/weather.dart';
-// import 'package:safegaurd/screens/auth/forgot_password.dart';
-// import 'package:safegaurd/screens/auth/login.dart';
-// import 'package:safegaurd/screens/home/feed_screen.dart';
+import 'package:safegaurd/app/app_provider.dart';
 import 'package:safegaurd/screens/home/home.dart';
-import 'package:safegaurd/screens/onboarding/onboarding_main.dart';
-// import 'package:safegaurd/screens/auth/login.dart';
-// import 'package:safegaurd/screens/onboarding/onboarding_main.dart';
+import 'package:safegaurd/screens/maps/accident_report.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,16 +22,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context)=> UserProvider())
-      ],
+      providers: AppProvider.providers,
       child: MaterialApp(
         title: 'SafeGuard',
         theme: ThemeData().copyWith(
               textTheme: GoogleFonts.dmSansTextTheme(
             Theme.of(context).textTheme,
           )),
-        home: const HomeScreen(),
+        home: const AccidentReportScreen(coordinates: LatLng(16.568821984802113, 81.52605148094995)),
         debugShowCheckedModeBanner: false,
       ),
     );

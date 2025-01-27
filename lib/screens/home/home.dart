@@ -172,9 +172,9 @@ void getData() async {
             Navbaritems(icon: Icons.home, label: "Home", onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const HomeScreen()));
               },),
-            Navbaritems(icon: Icons.person, label: "Profile", onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const UserProfileScreen()));
-              },),
+            // Navbaritems(icon: Icons.person, label: "Profile", onTap: () {
+            //     Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const UserProfileScreen()));
+            //   },),
             Navbaritems(icon: Icons.notifications, label: "Notifications", onTap:  () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>const NotificationScreen()));
               },),
